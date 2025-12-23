@@ -1,31 +1,35 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.service.CategorizationEngineService;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
+import com.example.demo.model.CategorizationLog;
+import com.example.demo.repository.CategorizationLogRepository;
+import com.example.demo.service.CategorizationEngineService;
+
 @Service
-public class CategorizationEngineServiceImpl
-        implements CategorizationEngineService {
+public class CategorizationEngineServiceImpl implements CategorizationEngineService {
+
+    private final CategorizationLogRepository logRepository;
+
+    public CategorizationEngineServiceImpl(CategorizationLogRepository logRepository) {
+        this.logRepository = logRepository;
+    }
 
     @Override
-    public String categorizeTicket(String description) {
+    public void runEngine(Long ticketId) {
+        // logic can be empty for now
+    }
 
-        if (description == null) {
-            return "GENERAL";
-        }
+    @Override
+    public List<CategorizationLog> getLogsForTicket(Long ticketId) {
+        return logRepository.findByTicketId(ticketId);
+    }
 
-        String text = description.toLowerCase();
-
-        if (text.contains("power") || text.contains("electric")) {
-            return "ELECTRICAL";
-        }
-        if (text.contains("network") || text.contains("internet")) {
-            return "NETWORK";
-        }
-        if (text.contains("hardware")) {
-            return "HARDWARE";
-        }
-
-        return "GENERAL";
+    @Override
+    public CategorizationLog getLog(Long logId) {
+        return logRepository.findById(logId)
+                .orElseThrow(() -> new RuntimeException("Log not found"));
     }
 }
