@@ -1,13 +1,7 @@
-package com.example.demo.service;
+public class CategorizationEngineService {
 
-import java.util.List;
-import com.example.demo.model.CategorizationLog;
-
-public interface CategorizationEngineService {
-
-    void runEngine(Long ticketId);
-
-    List<CategorizationLog> getLogsForTicket(Long ticketId);
-
-    CategorizationLog getLog(Long logId);
+    // Example method
+    public SomeReturnType categorizeTicket(Long ticketId) {
+        // Your logic here
+    }
 }
