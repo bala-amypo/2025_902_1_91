@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tickets")
@@ -10,41 +11,40 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String description;
+    private String title;
 
-    private String category;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category assignedCategory;
 
-    private String status;
+    private String urgencyLevel;
 
-    public Long getId() {
-        return id;
+    private LocalDateTime createdAt;
+
+    // Constructors
+    public Ticket() {}
+
+    public Ticket(String title, Category assignedCategory, String urgencyLevel) {
+        this.title = title;
+        this.assignedCategory = assignedCategory;
+        this.urgencyLevel = urgencyLevel;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    // Getters and Setters
+    public Long getId() { return id; }
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
 
-    public String getDescription() {
-        return description;
-    }
+    public Category getAssignedCategory() { return assignedCategory; }
+    public void setAssignedCategory(Category assignedCategory) { this.assignedCategory = assignedCategory; }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    public String getUrgencyLevel() { return urgencyLevel; }
+    public void setUrgencyLevel(String urgencyLevel) { this.urgencyLevel = urgencyLevel; }
 
-    public String getCategory() {
-        return category;
-    }
+    public LocalDateTime getCreatedAt() { return createdAt; }
 
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
     }
 }

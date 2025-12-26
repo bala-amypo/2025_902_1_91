@@ -1,45 +1,34 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.model.CategorizationLog;
-import com.example.demo.model.Ticket;
-import com.example.demo.service.CategorizationEngineService;
+import com.example.demo.repository.*;
 import com.example.demo.util.TicketCategorizationEngine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Service
-public class CategorizationEngineServiceImpl implements CategorizationEngineService {
+public class CategorizationEngineServiceImpl {
+
+    private final TicketRepository ticketRepo;
+    private final CategoryRepository categoryRepo;
+    private final CategorizationRuleRepository ruleRepo;
+    private final UrgencyPolicyRepository urgencyRepo;
+    private final CategorizationLogRepository logRepo;
+    private final TicketCategorizationEngine engine;
 
     @Autowired
-    private TicketCategorizationEngine engine;
-
-    // Dummy list of logs
-    private final List<CategorizationLog> logs = new ArrayList<>();
-
-    @Override
-    public String categorizeTicket(Ticket ticket) {
-        // Example: use engine to categorize ticket
-        return engine.categorize(ticket, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), logs);
+    public CategorizationEngineServiceImpl(TicketRepository ticketRepo,
+                                           CategoryRepository categoryRepo,
+                                           CategorizationRuleRepository ruleRepo,
+                                           UrgencyPolicyRepository urgencyRepo,
+                                           CategorizationLogRepository logRepo,
+                                           TicketCategorizationEngine engine) {
+        this.ticketRepo = ticketRepo;
+        this.categoryRepo = categoryRepo;
+        this.ruleRepo = ruleRepo;
+        this.urgencyRepo = urgencyRepo;
+        this.logRepo = logRepo;
+        this.engine = engine;
     }
 
-    @Override
-    public void categorizeOpenTickets() {
-        // Dummy logic: categorize some open tickets
-        List<Ticket> openTickets = new ArrayList<>(); // fetch from repository in real scenario
-        for (Ticket ticket : openTickets) {
-            categorizeTicket(ticket);
-        }
-    }
-
-    @Override
-    public CategorizationLog getLog(Long ticketId) {
-        // Dummy retrieval
-        return logs.stream()
-                .filter(log -> log.getTicket() != null && ticketId.equals(log.getTicket().getId()))
-                .findFirst()
-                .orElse(null);
-    }
+    // Add your service methods here (getLogsForTicket, categorizeTicket, etc.)
 }
