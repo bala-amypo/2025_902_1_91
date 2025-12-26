@@ -41,7 +41,7 @@ public class CategorizationLog {
     }
     
     @PrePersist
-    protected void onCreate() {
+    public void prePersist() {
         loggedAt = LocalDateTime.now();
     }
     

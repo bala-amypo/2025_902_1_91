@@ -36,7 +36,7 @@ public class CategorizationRule {
     }
     
     @PrePersist
-    protected void onCreate() {
+    public void prePersist() {
         createdAt = LocalDateTime.now();
         if (priority == null) {
             priority = 1;
