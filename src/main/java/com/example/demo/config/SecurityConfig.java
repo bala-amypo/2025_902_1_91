@@ -15,13 +15,13 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .anyRequest().permitAll()   // ✅ allow all requests
-            );
+                .anyRequest().authenticated()   // ✅ authentication required
+            )
+            .httpBasic(); // ✅ enables basic authentication
 
         return http.build();
     }
 
-    // Optional: keep only if passwords are still used somewhere
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
