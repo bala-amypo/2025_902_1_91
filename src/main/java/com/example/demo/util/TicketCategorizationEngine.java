@@ -6,7 +6,11 @@ import org.springframework.stereotype.Component;
 public class TicketCategorizationEngine {
 
     public String categorizeTicket(String description) {
-        // Your categorization logic here
-        return "Category1"; // placeholder
+        // Dummy logic: replace with your real categorization logic
+        if (description.toLowerCase().contains("urgent")) {
+            return "High Priority";
+        } else {
+            return "Normal";
+        }
     }
 }
