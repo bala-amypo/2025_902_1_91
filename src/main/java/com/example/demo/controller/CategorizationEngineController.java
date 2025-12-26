@@ -1,25 +1,54 @@
-// Source code is decompiled from a .class file using FernFlower decompiler (from Intellij IDEA).
-package io.swagger.v3.oas.annotations.tags;
+package com.example.demo.controller;
 
-import io.swagger.v3.oas.annotations.ExternalDocumentation;
-import io.swagger.v3.oas.annotations.extensions.Extension;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Inherited;
-import java.lang.annotation.Repeatable;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import com.example.demo.model.*;
+import com.example.demo.repository.*;
+import com.example.demo.util.TicketCategorizationEngine;
+import org.springframework.web.bind.annotation.*;
 
-@Target({ElementType.METHOD, ElementType.TYPE, ElementType.ANNOTATION_TYPE})
-@Retention(RetentionPolicy.RUNTIME)
-@Repeatable(Tags.class)
-@Inherited
-public @interface Tag {
-   String name();
+import java.util.ArrayList;
+import java.util.List;
 
-   String description() default "";
+@RestController
+@RequestMapping("/api/categorization")
+public class CategorizationEngineController {
 
-   ExternalDocumentation externalDocs() default @ExternalDocumentation;
+    private final TicketRepository ticketRepository;
+    private final CategoryRepository categoryRepository;
+    private final CategorizationRuleRepository ruleRepository;
+    private final UrgencyPolicyRepository urgencyPolicyRepository;
+    private final CategorizationLogRepository logRepository;
 
-   Extension[] extensions() default {};
+    public CategorizationEngineController(
+            TicketRepository ticketRepository,
+            CategoryRepository categoryRepository,
+            CategorizationRuleRepository ruleRepository,
+            UrgencyPolicyRepository urgencyPolicyRepository,
+            CategorizationLogRepository logRepository) {
+
+        this.ticketRepository = ticketRepository;
+        this.categoryRepository = categoryRepository;
+        this.ruleRepository = ruleRepository;
+        this.urgencyPolicyRepository = urgencyPolicyRepository;
+        this.logRepository = logRepository;
+    }
+
+    @PostMapping("/run/{ticketId}")
+    public Ticket runCategorization(@PathVariable Long ticketId) {
+
+        Ticket ticket = ticketRepository.findById(ticketId)
+                .orElseThrow(() -> new RuntimeException("Ticket not found"));
+
+        List<Category> categories = categoryRepository.findAll();
+        List<CategorizationRule> rules = ruleRepository.findAll();
+        List<UrgencyPolicy> policies = urgencyPolicyRepository.findAll();
+        List<CategorizationLog> logs = new ArrayList<>();
+
+        TicketCategorizationEngine engine = new TicketCategorizationEngine();
+        engine.categorize(ticket, categories, rules, policies, logs);
+
+        ticketRepository.save(ticket);
+        logRepository.saveAll(logs);
+
+        return ticket;
+    }
 }
