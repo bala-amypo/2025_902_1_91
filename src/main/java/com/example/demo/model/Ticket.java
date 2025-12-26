@@ -1,8 +1,6 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
-import java.util.*;
 
 @Entity
 @Table(name = "tickets")
@@ -12,40 +10,41 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String title;
-
     private String description;
 
-    private String urgencyLevel;
+    private String category;
 
-    private LocalDateTime createdAt;
+    private String status;
 
-    @ManyToOne
-    private Category assignedCategory;
-
-    @OneToMany(mappedBy = "ticket")
-    private List<CategorizationLog> logs = new ArrayList<>();
-
-    @PrePersist
-    public void prePersist() {
-        createdAt = LocalDateTime.now();
+    public Long getId() {
+        return id;
     }
 
-    // getters & setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public String getTitle() { return title; }
-    public void setTitle(String title) { this.title = title; }
+    public String getDescription() {
+        return description;
+    }
 
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-    public Category getAssignedCategory() { return assignedCategory; }
-    public void setAssignedCategory(Category assignedCategory) { this.assignedCategory = assignedCategory; }
+    public String getCategory() {
+        return category;
+    }
 
-    public String getUrgencyLevel() { return urgencyLevel; }
-    public void setUrgencyLevel(String urgencyLevel) { this.urgencyLevel = urgencyLevel; }
+    public void setCategory(String category) {
+        this.category = category;
+    }
 
-    public LocalDateTime getCreatedAt() { return createdAt; }
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }
