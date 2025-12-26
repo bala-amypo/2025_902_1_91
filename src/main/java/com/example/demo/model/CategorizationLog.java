@@ -1,9 +1,9 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "categorization_logs")
 public class CategorizationLog {
 
     @Id
@@ -11,19 +11,34 @@ public class CategorizationLog {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "ticket_id")
     private Ticket ticket;
 
     @ManyToOne
+    @JoinColumn(name = "applied_rule_id")
     private CategorizationRule appliedRule;
 
-    private String matchedKeyword;
-    private String assignedCategory;
-    private String assignedUrgency;
+    public Long getId() {
+        return id;
+    }
 
-    private LocalDateTime loggedAt;
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    @PrePersist
-    public void prePersist() {
-        loggedAt = LocalDateTime.now();
+    public Ticket getTicket() {
+        return ticket;
+    }
+
+    public void setTicket(Ticket ticket) {
+        this.ticket = ticket;
+    }
+
+    public CategorizationRule getAppliedRule() {
+        return appliedRule;
+    }
+
+    public void setAppliedRule(CategorizationRule appliedRule) {
+        this.appliedRule = appliedRule;
     }
 }

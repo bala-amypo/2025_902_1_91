@@ -1,37 +1,30 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "categorization_rules")
 public class CategorizationRule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String keyword;
-    private String matchType;
-    private Integer priority;
+    private String name;
 
-    @ManyToOne
-    private Category category;
-
-    private LocalDateTime createdAt;
-
-    @PrePersist
-    public void prePersist() {
-        if (priority == null) priority = 1;
-        createdAt = LocalDateTime.now();
+    public Long getId() {
+        return id;
     }
 
-    public void setKeyword(String k) { this.keyword = k; }
-    public String getKeyword() { return keyword; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public void setMatchType(String m) { this.matchType = m; }
-    public void setPriority(Integer p) { this.priority = p; }
-    public Integer getPriority() { return priority; }
+    public String getName() {
+        return name;
+    }
 
-    public void setCategory(Category c) { this.category = c; }
-    public Category getCategory() { return category; }
+    public void setName(String name) {
+        this.name = name;
+    }
 }
