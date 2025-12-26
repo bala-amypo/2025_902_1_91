@@ -5,12 +5,14 @@ import com.example.demo.service.TicketService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/tickets")
 @Tag(name = "Ticket", description = "Ticket management endpoints")
 public class TicketController {
+    
     private final TicketService ticketService;
     
     public TicketController(TicketService ticketService) {

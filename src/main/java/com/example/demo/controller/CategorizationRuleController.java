@@ -5,12 +5,14 @@ import com.example.demo.service.CategorizationRuleService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/rules")
 @Tag(name = "Rule", description = "Categorization rule management endpoints")
 public class CategorizationRuleController {
+    
     private final CategorizationRuleService ruleService;
     
     public CategorizationRuleController(CategorizationRuleService ruleService) {

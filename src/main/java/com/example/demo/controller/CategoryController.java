@@ -5,12 +5,14 @@ import com.example.demo.service.CategoryService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/categories")
 @Tag(name = "Category", description = "Category management endpoints")
 public class CategoryController {
+    
     private final CategoryService categoryService;
     
     public CategoryController(CategoryService categoryService) {

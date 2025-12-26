@@ -1,54 +1,37 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.*;
-import com.example.demo.repository.*;
-import com.example.demo.util.TicketCategorizationEngine;
+import com.example.demo.model.CategorizationLog;
+import com.example.demo.model.Ticket;
+import com.example.demo.service.CategorizationEngineService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/categorization")
+@RequestMapping("/api/categorize")
+@Tag(name = "Engine", description = "Categorization engine endpoints")
 public class CategorizationEngineController {
-
-    private final TicketRepository ticketRepository;
-    private final CategoryRepository categoryRepository;
-    private final CategorizationRuleRepository ruleRepository;
-    private final UrgencyPolicyRepository urgencyPolicyRepository;
-    private final CategorizationLogRepository logRepository;
-
-    public CategorizationEngineController(
-            TicketRepository ticketRepository,
-            CategoryRepository categoryRepository,
-            CategorizationRuleRepository ruleRepository,
-            UrgencyPolicyRepository urgencyPolicyRepository,
-            CategorizationLogRepository logRepository) {
-
-        this.ticketRepository = ticketRepository;
-        this.categoryRepository = categoryRepository;
-        this.ruleRepository = ruleRepository;
-        this.urgencyPolicyRepository = urgencyPolicyRepository;
-        this.logRepository = logRepository;
+    
+    private final CategorizationEngineService engineService;
+    
+    public CategorizationEngineController(CategorizationEngineService engineService) {
+        this.engineService = engineService;
     }
-
+    
     @PostMapping("/run/{ticketId}")
-    public Ticket runCategorization(@PathVariable Long ticketId) {
-
-        Ticket ticket = ticketRepository.findById(ticketId)
-                .orElseThrow(() -> new RuntimeException("Ticket not found"));
-
-        List<Category> categories = categoryRepository.findAll();
-        List<CategorizationRule> rules = ruleRepository.findAll();
-        List<UrgencyPolicy> policies = urgencyPolicyRepository.findAll();
-        List<CategorizationLog> logs = new ArrayList<>();
-
-        TicketCategorizationEngine engine = new TicketCategorizationEngine();
-        engine.categorize(ticket, categories, rules, policies, logs);
-
-        ticketRepository.save(ticket);
-        logRepository.saveAll(logs);
-
-        return ticket;
+    public ResponseEntity<Ticket> categorizeTicket(@PathVariable Long ticketId) {
+        return ResponseEntity.ok(engineService.categorizeTicket(ticketId));
+    }
+    
+    @GetMapping("/logs/{ticketId}")
+    public ResponseEntity<List<CategorizationLog>> getLogsForTicket(@PathVariable Long ticketId) {
+        return ResponseEntity.ok(engineService.getLogsForTicket(ticketId));
+    }
+    
+    @GetMapping("/log/{id}")
+    public ResponseEntity<CategorizationLog> getLog(@PathVariable Long id) {
+        return ResponseEntity.ok(engineService.getLog(id));
     }
 }
