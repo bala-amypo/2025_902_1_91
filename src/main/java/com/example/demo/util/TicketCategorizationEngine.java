@@ -1,30 +1,27 @@
 package com.example.demo.util;
 
 import com.example.demo.model.*;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component
 public class TicketCategorizationEngine {
 
-    public String categorize(Ticket ticket,
-                             List<Category> categories,
-                             List<CategorizationRule> rules,
-                             List<UrgencyPolicy> policies,
-                             List<CategorizationLog> logs) {
-        // Example dummy logic: assign first category or "Uncategorized"
-        String category = categories.isEmpty() ? "Uncategorized" : categories.get(0).getName();
-        ticket.setCategory(category);
+    // New method matching your controller
+    public void categorize(Ticket ticket,
+                           List<Category> categories,
+                           List<CategorizationRule> rules,
+                           List<UrgencyPolicy> urgencies,
+                           List<CategorizationLog> logs) {
 
-        // Optional logging
-        if (logs != null) {
-            CategorizationLog log = new CategorizationLog();
-            log.setTicket(ticket);
-            log.setAppliedRule(null); // replace with actual rule if needed
-            logs.add(log);
+        // Simple example logic
+        for (CategorizationRule rule : rules) {
+            for (Category category : categories) {
+                if (ticket.getDescription().contains(rule.getKeyword())) {
+                    ticket.setAssignedCategory(category);  // assign category
+                    ticket.setUrgencyLevel(category.getDefaultUrgency()); // assign urgency
+                    break;
+                }
+            }
         }
-
-        return category;
     }
 }

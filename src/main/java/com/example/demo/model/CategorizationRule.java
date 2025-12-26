@@ -14,6 +14,10 @@ public class CategorizationRule {
     private String matchType;
     private int priority;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;  // <-- added this
+
     private LocalDateTime createdAt;
 
     public CategorizationRule() {}
@@ -30,6 +34,9 @@ public class CategorizationRule {
 
     public int getPriority() { return priority; }
     public void setPriority(int priority) { this.priority = priority; }
+
+    public Category getCategory() { return category; }  // <-- getter
+    public void setCategory(Category category) { this.category = category; } // <-- setter
 
     public LocalDateTime getCreatedAt() { return createdAt; }
 
