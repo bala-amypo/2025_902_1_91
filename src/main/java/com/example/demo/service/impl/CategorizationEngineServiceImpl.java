@@ -1,49 +1,45 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.model.CategorizationLog;
 import com.example.demo.model.Ticket;
-import com.example.demo.repository.TicketRepository;
 import com.example.demo.service.CategorizationEngineService;
 import com.example.demo.util.TicketCategorizationEngine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class CategorizationEngineServiceImpl implements CategorizationEngineService {
 
-    private final TicketRepository ticketRepository;
-    private final TicketCategorizationEngine ticketEngine;
-
     @Autowired
-    public CategorizationEngineServiceImpl(TicketRepository ticketRepository,
-                                           TicketCategorizationEngine ticketEngine) {
-        this.ticketRepository = ticketRepository;
-        this.ticketEngine = ticketEngine;
+    private TicketCategorizationEngine engine;
+
+    // Dummy list of logs
+    private final List<CategorizationLog> logs = new ArrayList<>();
+
+    @Override
+    public String categorizeTicket(Ticket ticket) {
+        // Example: use engine to categorize ticket
+        return engine.categorize(ticket, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), logs);
     }
 
-    /**
-     * Categorize all open tickets
-     */
     @Override
     public void categorizeOpenTickets() {
-        List<Ticket> openTickets = ticketRepository.findAllByStatus("OPEN");
-
+        // Dummy logic: categorize some open tickets
+        List<Ticket> openTickets = new ArrayList<>(); // fetch from repository in real scenario
         for (Ticket ticket : openTickets) {
-            String category = ticketEngine.categorizeTicket(ticket.getDescription());
-            ticket.setCategory(category);
-            ticketRepository.save(ticket);
+            categorizeTicket(ticket);
         }
     }
 
-    /**
-     * Categorize a single ticket
-     */
     @Override
-    public String categorizeTicket(Ticket ticket) {
-        String category = ticketEngine.categorizeTicket(ticket.getDescription());
-        ticket.setCategory(category);
-        ticketRepository.save(ticket);
-        return category;
+    public CategorizationLog getLog(Long ticketId) {
+        // Dummy retrieval
+        return logs.stream()
+                .filter(log -> log.getTicket() != null && ticketId.equals(log.getTicket().getId()))
+                .findFirst()
+                .orElse(null);
     }
 }
