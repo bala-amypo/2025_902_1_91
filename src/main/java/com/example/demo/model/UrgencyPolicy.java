@@ -2,6 +2,8 @@ package com.example.demo.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "urgency_policies")
@@ -21,6 +23,9 @@ public class UrgencyPolicy {
     @Column(nullable = false)
     private LocalDateTime createdAt;
     
+    @ManyToMany(mappedBy = "urgencyPolicies")
+    private Set<Category> categories = new HashSet<>();
+    
     public UrgencyPolicy() {}
     
     public UrgencyPolicy(String policyName, String keyword, String urgencyOverride) {
@@ -30,7 +35,7 @@ public class UrgencyPolicy {
     }
     
     @PrePersist
-    protected void onCreate() {
+    public void prePersist() {
         createdAt = LocalDateTime.now();
     }
     
@@ -49,4 +54,7 @@ public class UrgencyPolicy {
     
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    
+    public Set<Category> getCategories() { return categories; }
+    public void setCategories(Set<Category> categories) { this.categories = categories; }
 }

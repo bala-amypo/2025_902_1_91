@@ -2,6 +2,8 @@ package com.example.demo.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "categories")
@@ -21,6 +23,14 @@ public class Category {
     @Column(nullable = false)
     private LocalDateTime createdAt;
     
+    @ManyToMany
+    @JoinTable(
+        name = "category_urgency_policies",
+        joinColumns = @JoinColumn(name = "category_id"),
+        inverseJoinColumns = @JoinColumn(name = "policy_id")
+    )
+    private Set<UrgencyPolicy> urgencyPolicies = new HashSet<>();
+    
     public Category() {}
     
     public Category(String categoryName, String description, String defaultUrgency) {
@@ -30,7 +40,7 @@ public class Category {
     }
     
     @PrePersist
-    protected void onCreate() {
+    public void prePersist() {
         createdAt = LocalDateTime.now();
     }
     
@@ -49,4 +59,7 @@ public class Category {
     
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    
+    public Set<UrgencyPolicy> getUrgencyPolicies() { return urgencyPolicies; }
+    public void setUrgencyPolicies(Set<UrgencyPolicy> urgencyPolicies) { this.urgencyPolicies = urgencyPolicies; }
 }

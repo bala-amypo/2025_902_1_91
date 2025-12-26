@@ -24,8 +24,7 @@ public class Ticket {
     @JoinColumn(name = "assigned_category_id")
     private Category assignedCategory;
     
-    @Column(nullable = false)
-    private String urgencyLevel = "LOW";
+    private String urgencyLevel;
     
     @Column(nullable = false)
     private LocalDateTime createdAt;
@@ -40,7 +39,7 @@ public class Ticket {
     }
     
     @PrePersist
-    protected void onCreate() {
+    public void prePersist() {
         createdAt = LocalDateTime.now();
     }
     

@@ -35,7 +35,7 @@ public class User {
     }
     
     @PrePersist
-    protected void onCreate() {
+    public void prePersist() {
         createdAt = LocalDateTime.now();
     }
     
