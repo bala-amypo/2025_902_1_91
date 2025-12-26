@@ -18,6 +18,12 @@ public class Ticket {
     
     private String createdBy;
     
+    private Long reporterId;
+    
+    private String priority;
+    
+    private String status;
+    
     @ManyToOne
     @JoinColumn(name = "assigned_category_id")
     private Category assignedCategory;
@@ -33,6 +39,14 @@ public class Ticket {
         this.description = description;
         this.location = location;
         this.createdBy = createdBy;
+    }
+    
+    public Ticket(String title, String description, String priority, String status, Long reporterId) {
+        this.title = title;
+        this.description = description;
+        this.priority = priority;
+        this.status = status;
+        this.reporterId = reporterId;
     }
     
     @PrePersist
@@ -64,4 +78,13 @@ public class Ticket {
     
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    
+    public Long getReporterId() { return reporterId; }
+    public void setReporterId(Long reporterId) { this.reporterId = reporterId; }
+    
+    public String getPriority() { return priority; }
+    public void setPriority(String priority) { this.priority = priority; }
+    
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 }
