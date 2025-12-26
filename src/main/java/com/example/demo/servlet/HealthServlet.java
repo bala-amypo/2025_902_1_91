@@ -1,19 +1,12 @@
 package com.example.demo.servlet;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import jakarta.servlet.http.*;
 
 @WebServlet(urlPatterns = "/health")
 public class HealthServlet extends HttpServlet {
-    
+
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
-            throws ServletException, IOException {
-        response.setContentType("application/json");
-        response.getWriter().write("{\"status\":\"UP\"}");
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
     }
 }
