@@ -4,61 +4,34 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "categorization_rules")
 public class CategorizationRule {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "category_id", nullable = false)
-    private Category category;
-    
-    @Column(nullable = false)
+
     private String keyword;
-    
-    @Column(nullable = false)
     private String matchType;
-    
-    @Column(nullable = false)
-    private Integer priority = 1;
-    
-    @Column(nullable = false)
+    private Integer priority;
+
+    @ManyToOne
+    private Category category;
+
     private LocalDateTime createdAt;
-    
-    public CategorizationRule() {}
-    
-    public CategorizationRule(Category category, String keyword, String matchType, Integer priority) {
-        this.category = category;
-        this.keyword = keyword;
-        this.matchType = matchType;
-        this.priority = priority;
-    }
-    
+
     @PrePersist
     public void prePersist() {
+        if (priority == null) priority = 1;
         createdAt = LocalDateTime.now();
-        if (priority == null) {
-            priority = 1;
-        }
     }
-    
-    // Getters and Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    
-    public Category getCategory() { return category; }
-    public void setCategory(Category category) { this.category = category; }
-    
+
+    public void setKeyword(String k) { this.keyword = k; }
     public String getKeyword() { return keyword; }
-    public void setKeyword(String keyword) { this.keyword = keyword; }
-    
-    public String getMatchType() { return matchType; }
-    public void setMatchType(String matchType) { this.matchType = matchType; }
-    
+
+    public void setMatchType(String m) { this.matchType = m; }
+    public void setPriority(Integer p) { this.priority = p; }
     public Integer getPriority() { return priority; }
-    public void setPriority(Integer priority) { this.priority = priority; }
-    
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+
+    public void setCategory(Category c) { this.category = c; }
+    public Category getCategory() { return category; }
 }
