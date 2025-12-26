@@ -12,6 +12,11 @@ public class CategorizationRule {
 
     private String name;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id")  // FK to Category
+    private Category category;
+
+    // Getters and setters
     public Long getId() {
         return id;
     }
@@ -26,5 +31,13 @@ public class CategorizationRule {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }
