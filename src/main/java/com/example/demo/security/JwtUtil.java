@@ -14,15 +14,13 @@ public class JwtUtil {
     private static final String SECRET =
             "mysecretkeymysecretkeymysecretkeymysecretkey";
 
-    private static final long EXPIRATION = 1000 * 60 * 60; // 1 hour
-
     private final Key key = Keys.hmacShaKeyFor(SECRET.getBytes());
 
     public String generateToken(String username) {
         return Jwts.builder()
                 .setSubject(username)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
+                .setExpiration(new Date(System.currentTimeMillis() + 3600000))
                 .signWith(key)
                 .compact();
     }
