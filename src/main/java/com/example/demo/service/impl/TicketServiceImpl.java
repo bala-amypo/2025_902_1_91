@@ -2,36 +2,36 @@ package com.example.demo.service.impl;
 
 import com.example.demo.exception.BadRequestException;
 import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.model.Category;
-import com.example.demo.repository.CategoryRepository;
-import com.example.demo.service.CategoryService;
+import com.example.demo.model.Ticket;
+import com.example.demo.repository.TicketRepository;
+import com.example.demo.service.TicketService;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class CategoryServiceImpl implements CategoryService {
-    private final CategoryRepository categoryRepository;
+public class TicketServiceImpl implements TicketService {
+    private final TicketRepository ticketRepository;
     
-    public CategoryServiceImpl(CategoryRepository categoryRepository) {
-        this.categoryRepository = categoryRepository;
+    public TicketServiceImpl(TicketRepository ticketRepository) {
+        this.ticketRepository = ticketRepository;
     }
     
     @Override
-    public Category createCategory(Category category) {
-        if (category == null) {
-            throw new BadRequestException("Category not found");
+    public Ticket createTicket(Ticket ticket) {
+        if (ticket.getDescription() == null || ticket.getDescription().length() < 10) {
+            throw new BadRequestException("Ticket not found");
         }
-        return categoryRepository.save(category);
+        return ticketRepository.save(ticket);
     }
     
     @Override
-    public Category getCategory(Long id) {
-        return categoryRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+    public Ticket getTicket(Long id) {
+        return ticketRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Ticket not found"));
     }
     
     @Override
-    public List<Category> getAllCategories() {
-        return categoryRepository.findAll();
+    public List<Ticket> getAllTickets() {
+        return ticketRepository.findAll();
     }
 }
